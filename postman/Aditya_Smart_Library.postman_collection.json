@@ -1,0 +1,325 @@
+{
+  "info": {
+    "_postman_id": "b3e51241-789a-4f51-b769-aditya-smart-lib",
+    "name": "Aditya University Smart Library Management API",
+    "description": "Comprehensive REST API collection for Aditya University B.Tech API Subject.\nCovers Authentication, QR Turnstile Scans, Live Occupancy, Seat Booking, Book Loans, Due-date Reminders, and Admin operations.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "jwtToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login - Student (Jaswanth)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"22A91A0501\",\n  \"password\": \"password123\",\n  \"role\": \"STUDENT\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login - Admin (Dr. Srinivas)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"ADM001\",\n  \"password\": \"password123\",\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login - Librarian (Meera Lakshmi)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"LIB001\",\n  \"password\": \"password123\",\n  \"role\": \"LIBRARIAN\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Current User Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          }
+        },
+        {
+          "name": "Logout Session",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/auth/logout", "host": ["{{baseUrl}}"], "path": ["auth", "logout"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Library & Occupancy",
+      "item": [
+        {
+          "name": "GET Live Occupancy Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/library/occupancy", "host": ["{{baseUrl}}"], "path": ["library", "occupancy"] }
+          }
+        },
+        {
+          "name": "GET All 50 Library Desks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/library/seats", "host": ["{{baseUrl}}"], "path": ["library", "seats"] }
+          }
+        },
+        {
+          "name": "POST QR Turnstile Gate Scan (Entry / Exit)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"22A91A0501\",\n  \"scanMethod\": \"QR_SCAN\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/library/scan", "host": ["{{baseUrl}}"], "path": ["library", "scan"] }
+          }
+        },
+        {
+          "name": "POST Librarian Student Gate Verification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"22A91A0501\",\n  \"scanMethod\": \"MANUAL_VERIFICATION\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/librarian/scan", "host": ["{{baseUrl}}"], "path": ["librarian", "scan"] }
+          }
+        },
+        {
+          "name": "GET Library Visit Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/library/visits", "host": ["{{baseUrl}}"], "path": ["library", "visits"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Seat Reservations",
+      "item": [
+        {
+          "name": "POST Reserve Seat",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seatId\": 2\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/reservations", "host": ["{{baseUrl}}"], "path": ["reservations"] }
+          }
+        },
+        {
+          "name": "GET My Current Reservation",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/reservations/me", "host": ["{{baseUrl}}"], "path": ["reservations", "me"] }
+          }
+        },
+        {
+          "name": "POST Check In to Reserved Seat",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/reservations/1/checkin", "host": ["{{baseUrl}}"], "path": ["reservations", "1", "checkin"] }
+          }
+        },
+        {
+          "name": "DELETE Release or Cancel Reservation",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/reservations/1", "host": ["{{baseUrl}}"], "path": ["reservations", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Books & Catalog",
+      "item": [
+        {
+          "name": "GET All Catalog Books",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/books", "host": ["{{baseUrl}}"], "path": ["books"] }
+          }
+        },
+        {
+          "name": "GET Search Books by Query",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books/search?q=REST",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "search"],
+              "query": [{ "key": "q", "value": "REST" }]
+            }
+          }
+        },
+        {
+          "name": "GET Book Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/books/categories", "host": ["{{baseUrl}}"], "path": ["books", "categories"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Loans & Deadlines",
+      "item": [
+        {
+          "name": "GET My Active Loans",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/loans/me", "host": ["{{baseUrl}}"], "path": ["loans", "me"] }
+          }
+        },
+        {
+          "name": "GET Overdue Loans List",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/loans/overdue", "host": ["{{baseUrl}}"], "path": ["loans", "overdue"] }
+          }
+        },
+        {
+          "name": "POST Return Book Loan",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/loans/1/return", "host": ["{{baseUrl}}"], "path": ["loans", "1", "return"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. In-App Notifications",
+      "item": [
+        {
+          "name": "GET Student Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/notifications", "host": ["{{baseUrl}}"], "path": ["notifications"] }
+          }
+        },
+        {
+          "name": "PATCH Mark Notification as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/notifications/1/read", "host": ["{{baseUrl}}"], "path": ["notifications", "1", "read"] }
+          }
+        },
+        {
+          "name": "POST Mark All Notifications as Read",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/notifications/mark-all-read", "host": ["{{baseUrl}}"], "path": ["notifications", "mark-all-read"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Admin Operations",
+      "item": [
+        {
+          "name": "GET Admin Dashboard Overview",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/admin/dashboard", "host": ["{{baseUrl}}"], "path": ["admin", "dashboard"] }
+          }
+        },
+        {
+          "name": "POST Admin Add New Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isbn\": \"978-0132350899\",\n  \"title\": \"Cloud Native Spring in Action\",\n  \"author\": \"Thomas Vitale\",\n  \"category\": \"Distributed Systems\",\n  \"publisher\": \"Manning\",\n  \"totalCopies\": 4,\n  \"shelfLocation\": \"Rack CS-05\",\n  \"description\": \"Comprehensive guide to building resilient cloud applications.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/admin/books", "host": ["{{baseUrl}}"], "path": ["admin", "books"] }
+          }
+        },
+        {
+          "name": "POST Admin Issue Book Loan",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookId\": 2,\n  \"userId\": 3,\n  \"issueDate\": \"2026-10-07\",\n  \"dueDate\": \"2026-10-21\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/admin/loans", "host": ["{{baseUrl}}"], "path": ["admin", "loans"] }
+          }
+        },
+        {
+          "name": "POST Trigger Scheduled Reminder Check",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwtToken}}" }],
+            "url": { "raw": "{{baseUrl}}/admin/trigger-reminders", "host": ["{{baseUrl}}"], "path": ["admin", "trigger-reminders"] }
+          }
+        }
+      ]
+    }
+  ]
+}
